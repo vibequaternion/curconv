@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Валюты — конвертер</title>
+  <meta name="description" content="Конвертер валют: введите сумму в одной валюте и сразу увидите её во всех остальных.">
+  <meta name="theme-color" content="#EDF1EC" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1D19" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preload" href="fonts/source-serif-4-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <div class="masthead-text">
+        <h1>Валюты</h1>
+        <p class="source" id="status" aria-live="polite">
+          <a id="sourceLink" target="_blank" rel="noopener"></a>
+          <span id="asOf"></span>
+        </p>
+      </div>
+      <div class="masthead-actions">
+        <button class="icon-btn" id="refreshBtn" type="button" aria-label="Обновить курс" title="Обновить курс">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Настроить валюты и источник" title="Настройки">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="notice" id="errorBox" hidden>
+      <p id="errorText"></p>
+      <button type="button" class="text-btn" id="retryBtn">Повторить</button>
+    </div>
+
+    <main id="board" class="board" aria-label="Суммы в выбранных валютах"></main>
+
+    <section class="empty" id="emptyState" hidden>
+      <h2>Валюты не выбраны</h2>
+      <p>Добавьте нужные в настройках — здесь они появятся в том же порядке.</p>
+      <button type="button" class="primary-btn" id="emptySettingsBtn">Выбрать валюты</button>
+    </section>
+
+    <footer class="colophon">
+      <p>Настройки и последние курсы хранятся в этом браузере, поэтому без интернета конвертер покажет сохранённый курс.</p>
+      <p id="attribution"></p>
+    </footer>
+  </div>
+
+  <dialog id="settings" class="sheet" aria-labelledby="settingsTitle">
+    <div class="sheet-head">
+      <h2 id="settingsTitle">Настройки</h2>
+      <button type="button" class="text-btn" id="closeSettings">Готово</button>
+    </div>
+
+    <div class="sheet-body">
+      <section class="group">
+        <h3>Откуда брать курс</h3>
+        <div id="sourceList" class="source-list" role="radiogroup" aria-label="Источник курса"></div>
+        <div id="bankPicker" class="bank-picker" hidden>
+          <label for="bankSelect">Центробанк</label>
+          <select id="bankSelect"></select>
+          <p class="fine" id="bankStatus"></p>
+        </div>
+      </section>
+
+      <section class="group">
+        <h3>Мои валюты</h3>
+        <p class="fine">На главном экране они идут в этом порядке. Порядок меняется стрелками или перетаскиванием.</p>
+        <ol id="myList" class="my-list"></ol>
+      </section>
+
+      <section class="group">
+        <h3><label for="search">Добавить валюту</label></h3>
+        <input id="search" class="search" type="search" placeholder="Код или название: usd, юань, bitcoin" autocomplete="off" spellcheck="false">
+        <ul id="addList" class="add-list"></ul>
+      </section>
+
+      <section class="group">
+        <h3>Другое устройство</h3>
+        <p class="fine">Ссылка открывает конвертер с вашими валютами и источником — например, на телефоне.</p>
+        <div class="row-actions">
+          <button type="button" class="primary-btn" id="shareBtn">Скопировать ссылку</button>
+          <button type="button" class="text-btn danger" id="resetBtn">Сбросить настройки</button>
+        </div>
+        <p class="fine" id="shareStatus" aria-live="polite"></p>
+      </section>
+    </div>
+  </dialog>
+</body>
+</html>
